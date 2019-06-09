@@ -6,9 +6,9 @@ verify_ssl = true
 [dev-packages]
 yapf = "*"
 pep8 = "*"
+flake8-mypy = "*"
 
 [packages]
-flake8-mypy = "*"
 pandas = "*"
 
 [requires]
