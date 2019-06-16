@@ -12,6 +12,7 @@ def manipulate_generator(generator, n):
     if check_prime(n):
         generator.send(None)
 
+
 def positive_integers_generator():
     n = 1
     while True:
