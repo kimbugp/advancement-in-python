@@ -1,6 +1,6 @@
 def check_prime(x):
     if x >= 2:
-        for n in range(2, x - 1):
+        for n in range(2, x):
             if (x % n) == 0:
                 return False
         return True
@@ -9,8 +9,14 @@ def check_prime(x):
 
 
 def manipulate_generator(generator, n):
-    if check_prime(n):
-        generator.send(None)
+    n += 1
+
+    if n == 2:
+        next(generator)
+        next(generator)
+
+    elif check_prime(n):
+        next(generator)
 
 
 def positive_integers_generator():
@@ -23,7 +29,7 @@ def positive_integers_generator():
             n += 1
 
 
-k = int(input())
+k = 10
 g = positive_integers_generator()
 for _ in range(k):
     n = next(g)
