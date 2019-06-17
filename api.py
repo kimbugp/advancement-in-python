@@ -2,6 +2,7 @@ import datetime
 import json
 import urllib.request
 import time
+from urllib.error import URLError
 
 
 def data_filter(firstDate, lastDate, weekDay):
@@ -26,7 +27,10 @@ def openAndClosePrices(firstDate, lastDate, weekDay):
     except ValueError:
         raise ValueError("Enter date in the format dd-MM-YY ie 15-August-2001")
 
-    data = json.load(urllib.request.urlopen(url.format(1)))
+    try:
+        data = json.load(urllib.request.urlopen(url.format(1)))
+    except URLError:
+        raise URLError("Check your connection")
     pages = data.get("total_pages")
     iterator = get_data(url, pages)
     for page in range(pages):
@@ -40,7 +44,10 @@ def openAndClosePrices(firstDate, lastDate, weekDay):
 def get_data(url, pages):
     n = 1
     while n <= pages:
-        yield json.load(urllib.request.urlopen(url.format(n)))
+        try:
+            yield json.load(urllib.request.urlopen(url.format(n)))
+        except URLError as error:
+            print(error)
         n += 1
 
 
