@@ -12,23 +12,26 @@ class Node(object):
 
 class LinkedList(object):
     def __init__(self, head=None):
-        if head is not None:
-            assert isinstance(head, Node), 'Head must be a node object'
+        self.validate_head(head)
         self.head = head
 
     def __len__(self):
         cursor = self.head
         counter = 0
-        while cursor is not None:
+        while cursor:
             counter += 1
             cursor = cursor.next
         return counter
+
+    def validate_head(self, head):
+        if head:
+            assert isinstance(head, Node), 'Head must be a node object'
 
     def __str__(self):
         return self.head
 
     def push(self, data=None):
-        if data is None:
+        if not data:
             return None
         node = Node(data, self.head)
         self.head = node
@@ -37,7 +40,7 @@ class LinkedList(object):
     def __repr__(self):
         data = []
         cursor = self.head
-        while cursor is not None:
+        while cursor:
             data.append(cursor.data)
             cursor = cursor.next
         return str(data)
