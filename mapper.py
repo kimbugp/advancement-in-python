@@ -30,5 +30,6 @@ def connectedCities(n, g, originCities, destinationCities):
     return result
 
 
-result = connectedCities(10, 1, [10, 4, 3, 6], [3, 6, 2, 9])
+result = connectedCities(10, 1, [10, 4, 3, 6, 4, 2, 4, 64, 3, 2, 35],
+                         [3, 6, 2, 9, 3, 6, 75, 43])
 print(result)

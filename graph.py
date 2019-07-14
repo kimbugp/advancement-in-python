@@ -38,6 +38,24 @@ class Graph(object):
                     return extended_path
         return None
 
+    def find_shortest_path(self, start_vertex, end_vertex, path=[]):
+        graph = self.__graph_dict
+        path = path + [start_vertex]
+        if start_vertex == end_vertex:
+            return path
+        if start_vertex not in graph:
+            return None
+
+        shortest = None
+        for vertex in graph[start_vertex]:
+            if vertex not in path:
+                extended_path = self.find_shortest_path(
+                    vertex, end_vertex, path)
+                if extended_path:
+                    if not shortest or len(extended_path) < len(shortest):
+                        shortest = extended_path
+        return shortest
+
     def __repr__(self):
         res = "vertices: "
         for k in self.__graph_dict:
@@ -46,16 +64,3 @@ class Graph(object):
         for edge in self.__generate_edges():
             res += str(edge) + " "
         return res
-
-
-graph = Graph()
-
-
-def subset(numbers, target, partial=[], partial_sum=0):
-    if partial_sum == target:
-        yield partial
-    if partial_sum >= target:
-        return
-    for i, n in enumerate(numbers):
-        remaining = numbers[(i + 1):]
-        yield from subset(remaining, target, partial + [n], partial_sum + n)
