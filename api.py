@@ -6,15 +6,27 @@ from urllib.error import URLError
 
 
 def data_filter(firstDate, lastDate, weekDay):
-    def myfilter(data):
-        day = data.get("date")
-        day = datetime.datetime.strptime(day, '%d-%B-%Y')
+    """
+    Filters data in a given date range by the day of the week
+    
+    Args:
+        firstDate (datetime):  start date range
+        lastDate (datetime): end date range
+        weekDay (datetime): weekday to search by
+    
+    Returns:
+        boolean: true of false if data value falls on a given day
+    """
+
+    def my_filter(data):
+        raw_day = data.get("date")
+        day = datetime.datetime.strptime(raw_day, '%d-%B-%Y')
         week_day = datetime.datetime.weekday(day)
         if firstDate <= day <= lastDate and week_day == weekDay:
             return True
         return False
 
-    return myfilter
+    return my_filter
 
 
 def openAndClosePrices(firstDate, lastDate, weekDay):
@@ -27,27 +39,29 @@ def openAndClosePrices(firstDate, lastDate, weekDay):
     except ValueError:
         raise ValueError("Enter date in the format dd-MM-YY ie 15-August-2001")
 
-    try:
-        data = json.load(urllib.request.urlopen(url.format(1)))
-    except URLError:
-        raise URLError("Check your connection")
-    pages = data.get("total_pages")
-    iterator = get_data(url, pages)
-    for page in range(pages):
-        data = next(iterator)
+    iterator = get_data(url)
+    for item in iterator:
         filter1 = data_filter(firstDate, lastDate, weekDay)
-        response = list(filter(filter1, data.get("data")))
-        for value in response:
-            print(value['date'], value['open'], value['close'], sep=" ")
+        response = list(filter(filter1, item.get("data")))
+        print(item.get('page'))
+        for no, value in enumerate(response):
+            print(no + 1,
+                  value['date'],
+                  value['open'],
+                  value['close'],
+                  sep=" ")
 
 
-def get_data(url, pages):
+def get_data(url):
     n = 1
-    while n <= pages:
+    data = json.load(urllib.request.urlopen(url.format(1)))
+    pages = data.get("total_pages")
+    yield data
+    while n < pages:
         try:
-            yield json.load(urllib.request.urlopen(url.format(n)))
-        except URLError as error:
-            print(error)
+            yield json.load(urllib.request.urlopen(url.format(n + 1)))
+        except URLError:
+            raise URLError("Check your connection")
         n += 1
 
 
@@ -57,7 +71,7 @@ except:
     _firstDate = None
 
 try:
-    _lastDate = "15-August-2001"
+    _lastDate = "15-August-2019"
 except:
     _lastDate = None
 

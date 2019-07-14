@@ -4,10 +4,10 @@ class Node(object):
         self.data = data
 
     def __str__(self):
-        return self.data
+        return str(self.data)
 
     def __repr__(self):
-        return str(self.data)
+        return "<Node %s--->%s>" % (self.data, str(self.next))
 
 
 class LinkedList(object):
@@ -37,6 +37,18 @@ class LinkedList(object):
         self.head = node
         return node
 
+    def find(self, key):
+        cursor = self.head
+        while cursor and cursor.data != key:
+            cursor = cursor.next
+        return cursor
+
+    def remove(self, key):
+        elem = self.find(key)
+        if not elem:
+            raise ValueError("item not found")
+        self.remove_elem(elem)
+
     def __repr__(self):
         data = []
         cursor = self.head
@@ -44,3 +56,8 @@ class LinkedList(object):
             data.append(cursor.data)
             cursor = cursor.next
         return str(data)
+
+
+l = LinkedList()
+for i in range(2, 13):
+    l.push(i)

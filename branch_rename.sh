@@ -17,7 +17,7 @@ rename(){
         helpFunction
         return
     fi
-    if git show-ref -q --heads $1 && !git show-ref -q --heads $2; then
+    if git show-ref -q --heads $1 && ! git show-ref -q --heads $2; then
         git branch -m $1 $2
         git push origin :$1 $2
         git push origin -u $2
