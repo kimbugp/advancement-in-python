@@ -1,11 +1,6 @@
 from functools import reduce
 from itertools import combinations, permutations
 
-#%% [markdown]
-
-#### Find the lowest steps to turn a 3x3 square into a magic square
-#%%
-
 
 def formingMagicSquare(square):
     possible = [[[8, 1, 6], [3, 5, 7], [4, 9, 2]],

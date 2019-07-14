@@ -1,4 +1,3 @@
-#%%
 import calendar
 
 
@@ -10,6 +9,3 @@ def get_leap_years(start: int, stop: int):
 
 
 print(get_leap_years(2019, 2018))
-
-
-#%%
