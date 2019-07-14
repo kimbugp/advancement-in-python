@@ -27,14 +27,15 @@ rename(){
 }
 
 push(){
+    protected=('develop' 'master')
     branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
     if [ "$1" = "-f" ]; then
         echo "Good luck"
         git add . && git commit --amend --no-edit &&git push -f
-    elif [ "$branch" != "develop" ];then
+    elif [[ " ${protected[*]} " != *" $branch "* ]];then
         echo 'Pushing to branch' $branch 
         git add . && git commit --amend --no-edit &&git push -f
     else
-        echo 'Boss this is develop\nBe serious '
+        echo "You are pushing to a protected branch ${branch}"
     fi
 }
