@@ -1,3 +1,4 @@
+import collections
 from collections import defaultdict
 
 
@@ -56,6 +57,27 @@ class Graph(object):
                         shortest = extended_path
         return shortest
 
+    def breadthfirstsearch(self, startnode):
+        # Track the visited and unvisited nodes
+        # uses a queue 
+        seen, queue = set([startnode]), collections.deque([startnode])
+        while queue:
+            vertex = queue.popleft()
+            for node in self.__graph_dict[vertex]:
+                if node not in seen:
+                    seen.add(node)
+                    queue.append(node)
+        return seen
+
+    def depth_first_search(self, start, visited=None):
+        # uses a stack `visited`
+        if visited is None:
+            visited = set()
+        visited.add(start)
+        for next_item in self.__graph_dict[start] - visited:
+            self.depth_first_search(next_item, visited)
+        return visited
+
     def __repr__(self):
         res = "vertices: "
         for k in self.__graph_dict:
@@ -64,3 +86,23 @@ class Graph(object):
         for edge in self.__generate_edges():
             res += str(edge) + " "
         return res
+
+
+graph_dict = {
+    "a": set(["b", "c"]),
+    "b": set(["a", "d"]),
+    "c": set(["a", "d"]),
+    "d": set(["e"]),
+    "e": set(["a"]),
+    "f": set(["y"]),
+    "y": set()
+}
+
+g = Graph(graph_dict)
+
+## gets all nodes that have been traversed
+nodes_1 = g.breadthfirstsearch("f")
+nodes_2 = g.depth_first_search("f")
+
+ynodes_1 = g.breadthfirstsearch("y")
+ynodes_2 = g.depth_first_search("y")
