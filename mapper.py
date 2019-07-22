@@ -1,3 +1,7 @@
+"""
+Find connected cities from the origin to destinations 
+given that the greated common divisor is greater than the threshold value
+"""
 import math
 from graph import Graph
 
