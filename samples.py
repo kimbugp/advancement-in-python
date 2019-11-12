@@ -36,7 +36,36 @@ def rev(var):
     return last + rev(var[1:-1]) + first
 
 
-def fibonacci(number):
-    if number <= 2:
-        return 1
-    return fibonacci(number - 1) + fibonacci(number - 2)
+items = {}
+
+
+def fibonacci(number, recursive=False):
+    def iterative(number):
+        start = 1
+        total = 1
+        prev1 = 0
+        prev2 = 0
+        while start < number:
+            if number not in items:
+                prev2 = prev1
+                prev1 = total
+                total = prev1 + prev2
+                start += 1
+                items[start] = total
+
+        return total
+
+    def recurse(number):
+        if number <= 2:
+            return 1
+        if number not in items:
+            items[number] = fibonacci(number - 1) + fibonacci(number - 2)
+        return items[number]
+
+    def solve(x):
+        return recurse(number) if x else iterative(number)
+
+    return solve(recursive)
+
+
+x = fibonacci(10)
